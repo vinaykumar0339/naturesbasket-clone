@@ -1,113 +1,244 @@
+"use client"
+import ImageCard from '@/components/common/ImageCard'
+import { cn } from '@/lib/utils'
+import { Carousel } from '@trendyol-js/react-carousel'
+import { Square, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
+import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel';
+
+const slides = [
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/f568e964-c4f3-46fe-91f5-a18d11e8e0ad_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/b815a21d-517a-4aca-adae-b794b1655347_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/39e74482-be18-472f-87ff-056e0d73e1d5_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/3f69b0bc-1d78-47f5-a43a-f35e6c86e0f0_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/6d69a2af-562b-40db-9b00-2c51195747c2_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/f0dd0bf7-0c9d-4876-8e87-cac05014e4d3_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/cd952378-6104-4241-8469-a7b43c18687c_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/fb7b659d-7a27-4a7b-b315-eda760088bb3_1320x376.jpg")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/aef74fd5-15f2-4562-9d89-086fb1501916_1320x376.png")]',
+  'bg-[url("https://d1z88p83zuviay.cloudfront.net/BannerImages/12368417-4251-4579-9aee-0f50c0549294_1320x376.jpg")]',
+]
+
+const shopByCategoryCardItems = [
+  {
+    title: 'Exotic Fruits',
+    imageUrl: '/shopByCategory/Exotic_Fruits.png'
+  },
+  {
+    title: 'Meat, Poultry & Seafood',
+    imageUrl: '/shopByCategory/Meats_Poultry_Seafood.png'
+  },
+  {
+    title: 'Dairy',
+    imageUrl: '/shopByCategory/Bakery_Dairy.png'
+  },
+  {
+    title: 'Artisanal Breads',
+    imageUrl: '/shopByCategory/Fresh_Artisanal_Breads.png'
+  },
+  {
+    title: 'Chocolates, Confectionery',
+    imageUrl: '/shopByCategory/Chocolates_Confectionery.png'
+  },
+  {
+    title: 'Delicatessen & Cheese',
+    imageUrl: '/shopByCategory/Delicatessen_Cheese.png'
+  },
+  {
+    title: 'The Gift Studio',
+    imageUrl: '/shopByCategory/The_Gift_Studio.png'
+  },
+  {
+    title: 'Breakfast, Jams, Honey & Spreads',
+    imageUrl: '/shopByCategory/Breakfast_Jams_Honey_Spreads.png'
+  },
+  {
+    title: 'Health & Wellness',
+    imageUrl: '/shopByCategory/Health_Wellness.png'
+  },
+  {
+    title: 'Grocery',
+    imageUrl: '/shopByCategory/Grocery.png'
+  },
+  {
+    title: 'Beverages',
+    imageUrl: '/shopByCategory/Beverages.png'
+  },
+  {
+    title: 'World Foods',
+    imageUrl: '/shopByCategory/World_Foods.png'
+  }
+]
+
+const whatsCooking = [
+  {
+    title: 'Gluten-Free Fusilli Aglio Olio',
+    imageUrl: '/whatsCooking/WhatsCooking-1.jpg',
+  },
+  {
+    title: 'Chinese Red Rice',
+    imageUrl: '/whatsCooking/WhatsCooking-2.jpg',
+  },
+  {
+    title: 'Blueberry Banana smoothie with Chia Seeds',
+    imageUrl: '/whatsCooking/WhatsCooking-3.jpg',
+  },
+  {
+    title: 'Quinoa Salad',
+    imageUrl: '/whatsCooking/WhatsCooking-4.jpg',
+  },
+  {
+    title: 'Spiced Hot Chocolate (ChrisMUSTs Edition)',
+    imageUrl: '/whatsCooking/WhatsCooking-5.jpg',
+  },
+  {
+    title: 'BLT Sandwich (ChrisMUSTs Edition)',
+    imageUrl: '/whatsCooking/WhatsCooking-6.jpg',
+  },
+  {
+    title: 'Strawberry Chia Seed Pudding (ChrisMUSTs Edition)',
+    imageUrl: '/whatsCooking/WhatsCooking-7.jpg',
+  },
+  {
+    title: 'Protien Breakfast Bar',
+    imageUrl: '/whatsCooking/WhatsCooking-8.jpg',
+  },
+  {
+    title: 'Zucchini Pestro Zoodles',
+    imageUrl: '/whatsCooking/WhatsCooking-9.jpg',
+  },
+  {
+    title: 'Avocado Chocolate Mousse',
+    imageUrl: '/whatsCooking/WhatsCooking-10.jpg',
+  },
+  {
+    title: 'WorldFoodFest',
+    imageUrl: '/whatsCooking/WhatsCooking-11.jpg',
+  },
+]
 
 export default function Home() {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex min-h-screen flex-col items-center justify-between px-24 py-10">
+
+      <div className='relative w-[90%] rounded-xl h-[22rem]'>
+        <ResponsiveCarousel
+          selectedItem={currentSlideIndex}
+          infiniteLoop
+          autoPlay
+          showArrows={false}
+          showStatus={false}
+          showIndicators={false}
+          showThumbs={false}
+          onChange={(index) => {
+            setCurrentSlideIndex(index);
+          }}
+        >
+          {slides.map((slide, index) => (
+            <div key={index} className={
+              cn(
+                'h-[22rem] rounded-xl w-full bg-no-repeat',
+                slide,
+              )
+            } />
+          ))}
+        </ResponsiveCarousel>
+        <div className='absolute left-2 bottom-2 flex'>
+          {slides.map((_, index) => (
+            <Square
+              className='hover:cursor-pointer' 
+              key={index} 
+              size={20}
+              onClick={() => {
+                setCurrentSlideIndex(index);
+              }}
+              color={`${currentSlideIndex === index ? '#e5e5e5': 'white'}`} 
+              fill={`${currentSlideIndex === index ? '#e5e5e5': 'white'}`} />
+          ))}
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <br />
+      <br />
+
+      <div className='grid grid-cols-3 w-[90%] gap-7'>
+        <div className={
+              'h-48 w-full relative rounded-xl'
+          }>
+            <Image
+                src={'/dashBoardImages/NaturesBasketGifting.jpeg'}
+                alt={'NaturesBasketGifting'}
+                fill
+                className='object-contain rounded-xl'
+            />
+        </div>
+        <div className={
+              'h-48 w-full relative rounded-xl'
+          }>
+            <Image
+                src={'/dashBoardImages/Defence-colony_BannerNew.jpg'}
+                alt={'Defence-colony_BannerNew'}
+                fill
+                className='object-contain rounded-xl'
+            />
+        </div>
+        <div className={
+              'h-48 w-full relative rounded-xl'
+          }>
+            <Image
+                src={'/dashBoardImages/Fruits-VegetablesNew.jpg'}
+                alt={'Fruits-VegetablesNew'}
+                fill
+                className='object-contain rounded-xl'
+            />
+        </div>
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      {/* 3 line breaks */}
+      <br />
+      <br />
+      <br />
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+     {/* shop by category */}
+     <div className='flex flex-col justify-center items-center space-y-3'>
+      <div className='flex justify-center items-center space-x-2'>
+        <div className='w-96 h-0.5 bg-[#aaa2a2]' />
+        <p className='text-xl uppercase'>Shop By Category</p>
+        <div className='w-96 h-0.5 bg-[#aaa2a2]' />
       </div>
+      <div className='flex flex-wrap justify-center items-center gap-3 px-26'>
+        {shopByCategoryCardItems.map(shopByCategoryCardItem => (
+          <ImageCard key={shopByCategoryCardItem.title} {...shopByCategoryCardItem} />
+        ))}
+      </div>
+     </div>
+     
+     {/* 3 line breaks */}
+     <br />
+     <br />
+     <br />
+
+     {/* whats cooking */}
+     <div className='flex w-[95%] flex-col justify-center items-center space-y-3'>
+      <div className='flex justify-center items-center space-x-2'>
+        <div className='w-96 h-0.5 bg-[#aaa2a2]' />
+        <p className='text-xl uppercase'>What&#39;s Cooking</p>
+        <div className='w-96 h-0.5 bg-[#aaa2a2]' />
+      </div>
+      <Carousel 
+        className='flex justify-center items-center' 
+        rightArrow={<ChevronRight color='#aaa2a2' size={50} />} 
+        leftArrow={<ChevronLeft color='#aaa2a2' size={50} />} 
+        show={4} 
+        slide={3} 
+      >
+        {whatsCooking.map(cooking => (
+          <ImageCard imageContainer={'h-52 w-52'} titleStyles={'text-[#880033]'} key={cooking.title} {...cooking} />
+        ))}
+      </Carousel>
+     </div>
     </main>
   )
 }
